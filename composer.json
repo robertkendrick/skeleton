@@ -20,7 +20,8 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "ext-json": "*",
-        "flightphp/core": "^3.0"
+        "flightphp/core": "^3.0",
+        "ghostff/session": "^2.1"
     },
     "config": {
         "process-timeout": 0,
