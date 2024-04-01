@@ -11,7 +11,8 @@ use Ghostff\Session\Session;	//bobk
 $dsn = 'mysql:host=' . $config['database']['host'] . ';dbname=' . $config['database']['dbname'] . ';charset=utf8mb4';
 $app->register('db', PdoWrapper::class, [ $dsn, $config['database']['user'], $config['database']['password'] ]);
 
-$app->register('session', Session::class);	//bobk
+//$app->register('session', Session::class);	//bobk
+Flight::register('session', Session::class);	//bobk
 
 // Got google oauth stuff? You could register that here
 // $app->register('google_oauth', Google_Client::class, [ $config['google_oauth'] ]);

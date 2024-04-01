@@ -16,8 +16,21 @@ $router->get('/', function() use ($app) {
 });
 
 $router->get('/test', function() use($app) {
+	// echo $app;
 	echo Session::class;
+<<<<<<< HEAD
 	print phpinfo();
+=======
+    $session = Flight::session();
+    // $session = $app->session();	// error msg - no session 
+	if (!$session) echo 'no Session variable';
+	else { 
+		if($session->get('is_logged_in')) {
+			echo '<br />' . $session->get('user') . ' is logged in';
+		}
+		print phpinfo();
+	}
+>>>>>>> eccbe995ba9a06fe267a1e18646f674756ec8441
 });
 
 $router->get('/session', function() use($app) {
@@ -25,10 +38,42 @@ $router->get('/session', function() use($app) {
 });
 
 $router->get('/login', function() use($app) {
-    $session = Flight::session();
-    // $session = $app->session();
+	// echo '<form method="post">';
+	// echo '<button type="submit">Login</button>';
+	// echo '</form>';
+	
+$op = <<<WEBTXT
+<div class="container">
+<form method="post">
+<label for=\"uname\"><b>Username</b></label>
+<input type="text" placeholder="Enter Username" name="uname" required>
+
+<label for="psw"><b>Password</b></label>
+<input type="password" placeholder="Enter Password" name="psw" required>    
+<button type="submit">Login</button>
+<label>
+<input type="checkbox" checked="checked" name="remember"> Remember me
+</label>
+</form>
+</div>
+WEBTXT;
+echo $op;
+});
+
+$router->get('/logout', function() use($app) {
+    $session = $app->session();
+	// var_dump($session);
 	if (!$session) echo 'no Session variable';
-	echo $session->get('user');
+
+    // do your login logic here
+    // validate password, etc.
+	
+    $session->set('is_logged_in', false);
+    $session->del('user');
+    $session->del('password');
+
+    // any time you write to the session, you must commit it deliberately.
+   $session->commit();
 });
 
 $router->get('/hello-world/@name', function($name) {
@@ -45,6 +90,9 @@ $router->group('/api', function() use ($router, $app) {
 //bobk
 //Flight::route('POST /login', function() {
 $router->post('/login', function() use ($app) {
+	$uname = $_POST['uname'];
+	$psw = $_POST['psw'];
+
     // $session = Flight::session();
     $session = $app->session();
 	// var_dump($session);
@@ -54,19 +102,21 @@ $router->post('/login', function() use ($app) {
     // validate password, etc.
 
     // if the login is successful
-	$user = "bobk";
+	$user = $uname;
+	$pass = $psw;
     $session->set('is_logged_in', true);
     $session->set('user', $user);
+    $session->set('password', $psw);
 
     // any time you write to the session, you must commit it deliberately.
    $session->commit();
-	if ($session->get('is_logged_in')) { 
-		echo $session->get('user');
-		echo 'You are logged in';
-	}
-	else {
-		echo 'You are NOT Logged in';
-	}
-	echo $session->id(), $session->get('user');
+	// if ($session->get('is_logged_in')) { 
+	// 	echo $session->get('user');
+	// 	echo 'You are logged in';
+	// }
+	// else {
+	// 	echo 'You are NOT Logged in';
+	// }
+	// echo $session->id(), $session->get('user');
 
 });
