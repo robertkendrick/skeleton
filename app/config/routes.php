@@ -17,6 +17,7 @@ $router->get('/', function() use ($app) {
 
 $router->get('/test', function() use($app) {
 	echo Session::class;
+	print phpinfo();
 });
 
 $router->get('/session', function() use($app) {
