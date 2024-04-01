@@ -19,19 +19,7 @@ $router->get('/', function() use ($app) {
 $router->get('/test', function() use($app) {
 	// echo $app;
 	echo Session::class;
-<<<<<<< HEAD
 	print phpinfo();
-=======
-    $session = Flight::session();
-    // $session = $app->session();	// error msg - no session 
-	if (!$session) echo 'no Session variable';
-	else { 
-		if($session->get('is_logged_in')) {
-			echo '<br />' . $session->get('user') . ' is logged in';
-		}
-		print phpinfo();
-	}
->>>>>>> eccbe995ba9a06fe267a1e18646f674756ec8441
 });
 
 $router->get('/session', function() use($app) {
