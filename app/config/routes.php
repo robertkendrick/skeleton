@@ -15,6 +15,7 @@ $router->get('/', function() use ($app) {
 	$app->render('welcome', [ 'message' => 'You are gonna do great things!' ]);
 });
 
+// just a test
 $router->get('/test', function() use($app) {
 	// echo $app;
 	echo Session::class;
