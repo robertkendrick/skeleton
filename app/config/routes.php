@@ -14,8 +14,9 @@ class MyMiddleware {
         //     exit;
         // }
 		// var_dump($params);
+		$session = Flight::app()->session();	// didn't like $app->session()
 		// $session = $app->session();
-		$session = Flight::session();
+		// $session = Flight::session();
 		// if ($session->exist('is_logged-in') === false) { return; }
 		$df = $session->exist('is_logged_in');
 		if ($df === false) Flight::redirect('/login');
@@ -54,6 +55,7 @@ $router->get('/test', function() use($app) {
 	session_cache_expire(0);
 	echo session_cache_limiter().'<br />';
 	$session = $app->session();
+	header("Cache-Control: no-cache, must-revalidate");
 	$df = $session->exist('is_logged_in');
 	if ($df === false) Flight::redirect('/login');
 
@@ -126,7 +128,7 @@ $router->get('/logout', function() use($app) {
 
 $router->get('/hello-world/@name', function($name) {
 	echo '<h1>Hello world! Oh hey '.$name.'!</h1>';
-});
+})->addMiddleware($MyMiddleware);
 
 $router->group('/api', function() use ($router, $app) {
 	$Api_Example_Controller = new ApiExampleController($app);
