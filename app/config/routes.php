@@ -7,26 +7,62 @@ use flight\net\Router;
 use Ghostff\Session\Session;	//bobk
 // $app->register('session', Session::class);	//bobk
 
+class MyMiddleware {
+    public function before($params) {
+        // if (isset($_SESSION['user']) === false) {
+        //     Flight::redirect('/login');
+        //     exit;
+        // }
+		// var_dump($params);
+		// $session = $app->session();
+		$session = Flight::session();
+		// if ($session->exist('is_logged-in') === false) { return; }
+		$df = $session->exist('is_logged_in');
+		if ($df === false) Flight::redirect('/login');
+		// if ($session->exist('is_logged_in')) return;
+		if($session->get('is_logged_in') === false) {
+			Flight::redirect('/login');
+			// echo '<br />' . $session->get('user') . ' is logged in';
+		}
+    }
+}
+
+$MyMiddleware = new MyMiddleware();
+
+//Custom Error Example
+
+//Let's say yo
+
 /** 
  * @var Router $router 
  * @var Engine $app
  */
 $router->get('/', function() use ($app) {
+	// $app->render(' Bk welcome from routes.php', [ 'message' => 'You are gonna do great things!' ]);
+	echo session_cache_limiter();
 	$app->render('welcome', [ 'message' => 'You are gonna do great things!' ]);
 });
 
 $router->get('/test', function() use($app) {
 	// echo $app;
-	echo Session::class;
-    $session = Flight::session();
-    // $session = $app->session();	// error msg - no session 
-	if (!$session) echo 'no Session variable';
-	else { 
-		if($session->get('is_logged_in')) {
-			echo '<br />' . $session->get('user') . ' is logged in';
-		}
-		print phpinfo();
+	// echo Session::class;
+//    $session = Flight::session();
+	// header('Cache-Control: no-store, no-cache, must-revalidate, max-age=1');
+	// header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
+	session_cache_limiter('nocache');
+	session_cache_expire(0);
+	echo session_cache_limiter().'<br />';
+	$session = $app->session();
+	$df = $session->exist('is_logged_in');
+	if ($df === false) Flight::redirect('/login');
+
+	echo '<a href="/logout">logout</a><br />';
+	if($session->get('is_logged_in')) {
+		echo '<br />' . $session->get('user') . ' is logged in';
 	}
+	print phpinfo();
+
+// })->addMiddleware($MyMiddleware);
 });
 
 $router->get('/session', function() use($app) {
@@ -56,9 +92,20 @@ WEBTXT;
 echo $op;
 });
 
+// Note: If you use session_start() afterwards, it will overwrite
+// your header with Cache-Control: private, max-age=10800, pre-check=10800 
+// because 180 minutes is the default value of session.cache_expire
 $router->get('/logout', function() use($app) {
-    $session = $app->session();
-	// var_dump($session);
+	// header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+	// header('Cache-Control: no-store');
+	// header('Cache-Control: no-cache, no-store, private');
+	
+	// use session_cache_??? functions before session_start()
+	session_cache_limiter('nocache');
+	session_cache_expire(0);
+	echo session_cache_limiter().'<br />';
+	$session = $app->session();
+	var_dump($session);
 	if (!$session) echo 'no Session variable';
 
     // do your login logic here
@@ -70,6 +117,10 @@ $router->get('/logout', function() use($app) {
 
     // any time you write to the session, you must commit it deliberately.
    $session->commit();
+	$session->destroy();
+	echo '<br /><a href="/test">test</a><br />';
+   echo 'YOU ARE LOGGED OUT';
+//    Flight::redirect('/login');
 });
 
 $router->get('/hello-world/@name', function($name) {
@@ -114,5 +165,5 @@ $router->post('/login', function() use ($app) {
 	// 	echo 'You are NOT Logged in';
 	// }
 	// echo $session->id(), $session->get('user');
-
+	Flight::redirect('/test');
 });

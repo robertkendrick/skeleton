@@ -34,7 +34,9 @@ $ds = DIRECTORY_SEPARATOR;
  */
 
  // First autoload composer
-require(__DIR__ . $ds . '..' . $ds . 'vendor' . $ds . 'autoload.php');
+echo __DIR__ . $ds . '..' . $ds . 'vendor' . $ds . 'autoload.php'; 
+// require(__DIR__ . $ds . '..' . $ds . 'vendor' . $ds . 'autoload.php');
+require(__DIR__ . $ds . 'vendor' . $ds . 'autoload.php');
 // additionally if you download this and the Flight lib as a zip file and not a composer project, you could
 // comment the require above, and uncomment the line below and correct the path to your lib.
 // require(__DIR__ . $ds . '..' . $ds . 'path/to/flight/autoload.php');
@@ -44,7 +46,8 @@ require(__DIR__ . $ds . '..' . $ds . 'vendor' . $ds . 'autoload.php');
  * P.S. When you require a php file and that file returns an array, the array
  * will be returned by the require statement where you can assign it to a var.
  */
-$config_file_path = __DIR__. $ds . '..' . $ds . 'app/config/config.php';
+// $config_file_path = __DIR__. $ds . '..' . $ds . 'app/config/config.php';
+$config_file_path = __DIR__. $ds . 'app/config/config.php';
 if(file_exists($config_file_path) === false) {
 	Flight::halt(500, 'Config file not found. Please create a config.php file in the app/config directory to get started.');
 }
@@ -56,7 +59,7 @@ $config = require($config_file_path);
  * that will handle the request.
  */
 Flight::route('GET /', function() {
-	echo '<h1>Welcome to the Flight Simple Example!</h1><h2>You are gonna do great things!</h2>';
+	echo '<h1>index-simple.php - Welcome to the Flight Simple Example!</h1><h2>You are gonna do great things!</h2>';
 });
 
 Flight::route('GET /hello-world/@name', function($name) {

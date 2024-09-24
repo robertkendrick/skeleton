@@ -13,6 +13,7 @@ class ApiExampleController {
 	}
 
 	public function getUsers() {
+		// session_cache_limiter('private_no_expire');
 		// You could actually pull data from the database if you had one set up
 		// $users = $this->app->db()->fetchAll("SELECT * FROM users");
 		$users = [
