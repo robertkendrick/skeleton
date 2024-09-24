@@ -64,8 +64,6 @@ $router->get('/test', function() use($app) {
 	print phpinfo();
 
 // })->addMiddleware($MyMiddleware);
-	echo Session::class;
-	print phpinfo();
 });
 
 $router->get('/session', function() use($app) {
